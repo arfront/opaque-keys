@@ -330,8 +330,8 @@ class OpaqueKey(with_metaclass(OpaqueKeyMetaclass)):
         return type(self)(**existing_values)
 
     def __setattr__(self, name, value):
-        if getattr(self, '_initialized', False):
-            raise AttributeError("Can't set {!r}. OpaqueKeys are immutable.".format(name))
+        # if getattr(self, '_initialized', False):
+        #     raise AttributeError("Can't set {!r}. OpaqueKeys are immutable.".format(name))
 
         super(OpaqueKey, self).__setattr__(name, value)  # pylint: disable=no-member
 

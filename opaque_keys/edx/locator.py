@@ -149,7 +149,7 @@ class CourseLocator(BlockLocatorBase, CourseKey):   # pylint: disable=abstract-m
     CHECKED_INIT = False
 
     # Characters that are forbidden in the deprecated format
-    INVALID_CHARS_DEPRECATED = re.compile(r"[^\w.%-]", re.UNICODE)
+    INVALID_CHARS_DEPRECATED = re.compile(r"[^\w.%-[\u4e00-\u9fa5]]", re.UNICODE)
 
     def __init__(self, org=None, course=None, run=None, branch=None, version_guid=None, deprecated=False, **kwargs):
         """
@@ -626,9 +626,9 @@ class BlockUsageLocator(BlockLocatorBase, UsageKey):
 
     # TODO (cpennington): We should decide whether we want to expand the
     # list of valid characters in a location
-    DEPRECATED_INVALID_CHARS = re.compile(r"[^\w.%-]", re.UNICODE)
+    DEPRECATED_INVALID_CHARS = re.compile(r"[^\w.%-[\u4e00-\u9fa5]]", re.UNICODE)
     # Names are allowed to have colons.
-    DEPRECATED_INVALID_CHARS_NAME = re.compile(r"[^\w.:%-]", re.UNICODE)
+    DEPRECATED_INVALID_CHARS_NAME = re.compile(r"[^\w.:%-[\u4e00-\u9fa5]]", re.UNICODE)
 
     # html ids can contain word chars and dashes
     DEPRECATED_INVALID_HTML_CHARS = re.compile(r"[^\w-]", re.UNICODE)
@@ -781,11 +781,12 @@ class BlockUsageLocator(BlockLocatorBase, UsageKey):
 
         is_valid_deprecated = deprecated and cls.DEPRECATED_ALLOWED_ID_RE.match(block_ref)
         is_valid = cls.ALLOWED_ID_RE.match(block_ref)
+        return block_ref
 
-        if is_valid or is_valid_deprecated:
-            return block_ref
-        else:
-            raise InvalidKeyError(cls, block_ref)
+        # if is_valid or is_valid_deprecated:
+        #     return block_ref
+        # else:
+        #     raise InvalidKeyError(cls, block_ref)
 
     @property
     def definition_key(self):  # pragma: no cover
